@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Accessibilibounty Hunters</title>
-  <meta name="description" content="A bug bounty for accessibility bugs in indie apps. Find bugs, earn points, climb the leaderboard.">
+  <meta name="description" content="It's a bug bounty, but for accessibility bugs. Find them, report them and earn prizes.">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -135,20 +135,19 @@
     .hero {
       padding-block: 2.5rem 3rem;
     }
-    .hero-art {
-      display: block;
-      width: clamp(12rem, 45vw, 18rem);
-      height: auto;
+    /* Logo (square) and poster (2:3) share one row at the same height. */
+    .hero-cover {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 0.75rem;
+      max-width: 32rem;
       margin: 0 0 1.5rem;
-      border-radius: 1.5rem;
     }
-    .eyebrow {
-      margin: 0 0 0.5rem;
-      font-size: 0.95rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
+    .hero-cover img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 1.5rem;
     }
     h1 {
       margin: 0 0 1rem;
@@ -233,6 +232,31 @@
       border: 1px solid var(--border);
       border-radius: 10px;
     }
+    .app-list {
+      list-style: none;
+      margin: 0 0 1rem;
+      padding: 0;
+      display: grid;
+      gap: 1rem;
+    }
+    .app-list h3 { margin: 0 0 0.25rem; }
+    .app-list p { margin: 0; }
+    .prize {
+      display: grid;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    @media (min-width: 40rem) {
+      .prize { grid-template-columns: 16rem 1fr; }
+    }
+    .prize img {
+      display: block;
+      width: 100%;
+      max-width: 20rem;
+      height: auto;
+      border-radius: 1.5rem;
+    }
+    .prize p { margin: 0 0 1rem; }
     .empty {
       border-style: dashed;
       color: var(--muted);
@@ -336,6 +360,7 @@
         <ul role="list">
           <li><a href="#hunt">Hunt bugs</a></li>
           <li><a href="#leaderboard">Leaderboard</a></li>
+          <li><a href="#prize">First prize</a></li>
           <li><a href="#developers">For developers</a></li>
           <li><a href="#report-button">Report button code</a></li>
         </ul>
@@ -345,28 +370,32 @@
 
   <main id="main" tabindex="-1">
     <div class="hero wrap">
-      <picture>
-        <source srcset="images/logo.webp" type="image/webp">
-        <img class="hero-art" src="images/logo.png" width="800" height="800" alt="A cartoon bounty hunter with a huge handlebar mustache, sunglasses and a sleeveless leather vest squints through a magnifying glass at an iPhone, where a nervous bug hides behind a button.">
-      </picture>
-      <p class="eyebrow">Wanted: accessibility bugs</p>
+      <div class="hero-cover">
+        <picture>
+          <source srcset="images/logo.webp" type="image/webp">
+          <img src="images/logo.png" width="800" height="800" alt="A cartoon bounty hunter with a huge handlebar mustache, sunglasses on his head, a sleeveless leather vest and a &quot;VoiceOver&quot; heart tattoo squints through a magnifying glass at an iPhone, where a nervous bug hides behind a button.">
+        </picture>
+        <picture>
+          <source srcset="images/wanted.webp" type="image/webp">
+          <img src="images/wanted.png" width="600" height="900" alt="A WANTED poster for The Unlabeled Button, a smug blank button in a cowboy hat saying &quot;Button. Button. Button.&quot; Last seen confusing VoiceOver users. Reward: 1,000 points.">
+        </picture>
+      </div>
       <h1>Accessibilibounty Hunters</h1>
-      <p class="lede">It's a bug bounty, but for accessibility bugs. Find them in indie apps, report them, earn points and climb the leaderboard.</p>
+      <p class="lede">It's a bug bounty, but for accessibility bugs. Find them, report them and earn prizes.</p>
       <div class="actions">
         <a class="button primary" href="mailto:hello@robinkanatzar.com?subject=Accessibility%20bug%20report&amp;body=App%20name%3A%0A%0AApp%20Store%20link%3A%0A%0ADevice%20and%20iOS%20version%3A%0A%0AAccessibility%20feature%20or%20setting%20you%20were%20using%20(for%20example%20VoiceOver%2C%20Voice%20Control%2C%20larger%20text)%3A%0A%0AWhat%20happened%3A%0A%0AWhat%20you%20expected%3A%0A%0ASteps%20to%20reproduce%3A%0A%0AName%20to%20show%20on%20the%20leaderboard%3A%0A">Report a bug<span class="visually-hidden"> (opens your email app)</span></a>
         <a class="button secondary" href="#developers">List your app</a>
       </div>
-      <p class="note">"Report a bug" opens an email with a short form to fill in. No email app? Write to <a href="mailto:hello@robinkanatzar.com">hello@robinkanatzar.com</a>.</p>
     </div>
 
     <section id="hunt" aria-labelledby="hunt-heading">
       <div class="wrap">
         <h2 id="hunt-heading">How bounty hunting works</h2>
         <ol class="steps" role="list">
-          <li><strong>Pick an app</strong> Choose one of the indie apps listed below and try it with the accessibility features you know: VoiceOver, Voice Control, larger text, keyboard, and so on.</li>
+          <li><strong>Pick an app</strong> Choose one of the apps listed below and try it with the accessibility features you know: VoiceOver, Voice Control, larger text, keyboard, and so on.</li>
           <li><strong>Report what you find</strong> Email your bug to <a href="mailto:hello@robinkanatzar.com">hello@robinkanatzar.com</a>. Say what happened, what you expected and how to make it happen again.</li>
           <li><strong>Get verified</strong> Every report is checked by hand. If something is unclear, you'll get an email asking about it.</li>
-          <li><strong>Climb the board</strong> Verified bugs earn points. The more you find, the higher you go. The top hunter wins a prize of some sort, or at least the glory of being number 1.</li>
+          <li><strong>Climb the board</strong> Verified bugs earn points. The more you find, the higher you go. The top hunter wins the <a href="#prize">first prize</a>.</li>
         </ol>
 
         <h3>What makes a good report</h3>
@@ -384,9 +413,17 @@
     <section id="apps" aria-labelledby="apps-heading">
       <div class="wrap">
         <h2 id="apps-heading">Apps on the hunt list</h2>
-        <div class="card empty">
-          <p>No apps are listed yet. Have an indie app? <a href="#developers">Get it listed</a>.</p>
-        </div>
+        <ul class="app-list" role="list">
+          <li class="card">
+            <h3><a href="https://apps.apple.com/app/id6499107902">Live Traffic Alerts: MyCommute<span class="visually-hidden"> (App Store)</span></a></h3>
+            <p>Tells you when to leave for your regular commutes, based on live traffic. iPhone and iPad.</p>
+          </li>
+          <li class="card">
+            <h3><a href="https://apps.apple.com/app/id6757376628">Blackjack 21 Trainer<span class="visually-hidden"> (App Store)</span></a></h3>
+            <p>Teaches blackjack strategy and card counting with lessons and practice drills. iPhone.</p>
+          </li>
+        </ul>
+        <p>Have an app? <a href="#developers">Get it listed</a>.</p>
       </div>
     </section>
 
@@ -399,10 +436,26 @@
       </div>
     </section>
 
+    <section id="prize" aria-labelledby="prize-heading">
+      <div class="wrap">
+        <h2 id="prize-heading">First prize</h2>
+        <div class="prize">
+          <picture>
+            <source srcset="images/prize-tattoo.webp" type="image/webp">
+            <img src="images/prize-tattoo.jpg" width="800" height="800" loading="lazy" alt="A temporary tattoo on a person's upper arm: a red heart wrapped in a banner that reads &quot;VoiceOver&quot;.">
+          </picture>
+          <div>
+            <p>The top hunter on the leaderboard wins a VoiceOver temporary tattoo: the red heart with the "VoiceOver" banner, just like the one on our bounty hunter's arm.</p>
+            <p>The tattoo washes off. The glory of being number 1 doesn't.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="developers" aria-labelledby="developers-heading">
       <div class="wrap">
-        <h2 id="developers-heading">For indie developers</h2>
-        <p>Indie apps are leading the charge with accessibility. If you want the community to find accessibility bugs in your app, get it listed here.</p>
+        <h2 id="developers-heading">For developers</h2>
+        <p>If you want the community to find accessibility bugs in your app, get it listed here.</p>
 
         <h3>What you get</h3>
         <ul class="checks">
