@@ -253,6 +253,17 @@
     }
     .app-list h3 { margin: 0 0 0.25rem; }
     .app-list p { margin: 0; }
+    .app-card {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .app-card img {
+      flex: none;
+      width: 64px;
+      height: 64px;
+      border-radius: 22.5%;
+    }
     .prize {
       display: grid;
       gap: 1.5rem;
@@ -432,13 +443,19 @@
       <div class="wrap">
         <h2 id="apps-heading">Apps on the hunt list</h2>
         <ul class="app-list" role="list">
-          <li class="card">
-            <h3><a href="https://apps.apple.com/app/id6499107902">Live Traffic Alerts: MyCommute<span class="visually-hidden"> (App Store)</span></a></h3>
-            <p>Tells you when to leave for your regular commutes, based on live traffic. Runs on iPhone and iPad.</p>
+          <li class="card app-card">
+            <img src="images/apps/mycommute.png" width="64" height="64" alt="">
+            <div>
+              <h3><a href="https://apps.apple.com/app/id6499107902">Live Traffic Alerts: MyCommute<span class="visually-hidden"> (App Store)</span></a></h3>
+              <p>Tells you when to leave for your regular commutes, based on live traffic. Runs on iPhone and iPad.</p>
+            </div>
           </li>
-          <li class="card">
-            <h3><a href="https://apps.apple.com/app/id6757376628">Blackjack 21 Trainer<span class="visually-hidden"> (App Store)</span></a></h3>
-            <p>Teaches blackjack strategy and card counting with lessons and practice drills. Runs on iPhone.</p>
+          <li class="card app-card">
+            <img src="images/apps/blackjack.png" width="64" height="64" alt="">
+            <div>
+              <h3><a href="https://apps.apple.com/app/id6757376628">Blackjack 21 Trainer<span class="visually-hidden"> (App Store)</span></a></h3>
+              <p>Teaches blackjack strategy and card counting with lessons and practice drills. Runs on iPhone.</p>
+            </div>
           </li>
         </ul>
         <p>Have an iOS app? <a href="#developers">Get it listed</a>.</p>
@@ -465,6 +482,7 @@
           <div>
             <p>The top hunter on the leaderboard wins a VoiceOver temporary tattoo: the red heart with the "VoiceOver" banner, just like the one on our bounty hunter's arm.</p>
             <p>The tattoo washes off. The glory of being number 1 doesn't.</p>
+            <p>More prizes are coming soon.</p>
           </div>
         </div>
       </div>
@@ -625,9 +643,6 @@ struct ReportAccessibilityIssueButton: View {
 
         <h3>Why do I need the community to help? Why can't I just use AI?</h3>
         <p>AI is fast and keeps getting better, but the community will always find better usability bugs. People who use VoiceOver, Voice Control or larger text every day notice what makes an app hard to use, not just what breaks a rule. Besides, it'll save you tokens.</p>
-
-        <h3>I'm a developer. What if listing my app gets me a pile of bad comments?</h3>
-        <p>Don't worry about that! It's why every bug report comes to me first. I clarify and filter the reports, then send you the best, most constructive feedback, written in a positive light. I even include ways to fix each problem, so you know where to start.</p>
       </div>
     </section>
   </main>
