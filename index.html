@@ -4,31 +4,497 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Accessibilibounty Hunters</title>
+  <meta name="description" content="A bug bounty for accessibility bugs in indie apps. Find bugs, earn points, climb the leaderboard.">
   <style>
-    :root { color-scheme: light dark; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 1rem;
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-      background: #ffffff;
-      color: #1a1a1a;
+    :root {
+      color-scheme: light dark;
+      --bg: #faf6ee;
+      --surface: #ffffff;
+      --text: #1f1a14;
+      --muted: #5a4f43;
+      --accent: #8a3b12;
+      --accent-text: #ffffff;
+      --border: #d9cdb8;
+      --code-bg: #1e1b17;
+      --code-text: #f3ece0;
+      --focus: #1a5fb4;
     }
     @media (prefers-color-scheme: dark) {
-      body { background: #121212; color: #f2f2f2; }
+      :root {
+        --bg: #16130f;
+        --surface: #221e19;
+        --text: #f3ece0;
+        --muted: #c9bba6;
+        --accent: #f0a46b;
+        --accent-text: #1f1a14;
+        --border: #4a4137;
+        --code-bg: #0e0c0a;
+        --focus: #8cc4ff;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: 1.125rem;
+      line-height: 1.6;
+    }
+
+    a { color: var(--accent); text-underline-offset: 0.15em; }
+    a:hover { text-decoration-thickness: 2px; }
+
+    :focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: 1rem;
+      top: -4rem;
+      padding: 0.5rem 1rem;
+      background: var(--accent);
+      color: var(--accent-text);
+      font-weight: 700;
+      border-radius: 6px;
+      z-index: 10;
+    }
+    .skip-link:focus { top: 1rem; }
+
+    .wrap {
+      max-width: 52rem;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    header.site {
+      border-bottom: 1px solid var(--border);
+    }
+    header.site .wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.5rem;
+      align-items: center;
+      justify-content: space-between;
+      padding-block: 1rem;
+    }
+    .brand {
+      font-weight: 800;
+      color: var(--text);
+      text-decoration: none;
+    }
+    nav ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem 1.25rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 1rem;
+    }
+
+    .hero {
+      padding-block: 4rem 3rem;
+    }
+    .eyebrow {
+      margin: 0 0 0.5rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
     }
     h1 {
-      font-size: clamp(2rem, 6vw, 4rem);
-      text-align: center;
+      margin: 0 0 1rem;
+      font-size: clamp(2.25rem, 7vw, 4rem);
+      line-height: 1.1;
+      overflow-wrap: anywhere;
+    }
+    .lede {
+      margin: 0 0 2rem;
+      font-size: 1.3rem;
+      max-width: 38rem;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .button {
+      display: inline-block;
+      padding: 0.75rem 1.25rem;
+      min-height: 44px;
+      border: 2px solid var(--accent);
+      border-radius: 8px;
+      font: inherit;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .button.primary { background: var(--accent); color: var(--accent-text); }
+    .button.secondary { background: transparent; color: var(--accent); }
+
+    section {
+      padding-block: 2.5rem;
+      border-top: 1px solid var(--border);
+    }
+    h2 {
+      margin: 0 0 1rem;
+      font-size: clamp(1.6rem, 4vw, 2.1rem);
       line-height: 1.2;
+    }
+    h3 {
+      margin: 2rem 0 0.75rem;
+      font-size: 1.25rem;
+    }
+
+    .steps {
+      counter-reset: step;
+      list-style: none;
+      margin: 1.5rem 0;
+      padding: 0;
+      display: grid;
+      gap: 1rem;
+    }
+    .steps li {
+      counter-increment: step;
+      position: relative;
+      padding: 1rem 1rem 1rem 3.75rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .steps li::before {
+      content: counter(step);
+      position: absolute;
+      left: 1rem;
+      top: 1rem;
+      width: 2rem;
+      height: 2rem;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--accent-text);
+      font-weight: 800;
+    }
+    .steps strong { display: block; }
+
+    .card {
+      padding: 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .empty {
+      border-style: dashed;
+      color: var(--muted);
+    }
+    .empty p { margin: 0; }
+
+    ul.checks { padding-left: 1.25rem; }
+    ul.checks li { margin-bottom: 0.5rem; }
+
+    .code-block {
+      margin: 1rem 0;
+      border-radius: 10px;
+      background: var(--code-bg);
+      color: var(--code-text);
+      border: 1px solid var(--border);
+    }
+    .code-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.5rem 0.5rem 0.5rem 1rem;
+      border-bottom: 1px solid #3a342c;
+      font-size: 0.95rem;
+    }
+    .copy {
+      min-height: 44px;
+      padding: 0.5rem 1rem;
+      border: 2px solid var(--code-text);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--code-text);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .copy:focus-visible { outline-color: #8cc4ff; }
+    pre {
+      margin: 0;
+      padding: 1rem;
+      overflow-x: auto;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    pre:focus-visible { outline-color: #8cc4ff; outline-offset: -3px; }
+    code {
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    }
+    p code, li code {
+      padding: 0.1em 0.35em;
+      border-radius: 4px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-size: 0.9em;
+      overflow-wrap: anywhere;
+    }
+
+    .status {
+      min-height: 1.5em;
+      margin: 0;
+      font-size: 0.95rem;
+    }
+
+    footer {
+      padding-block: 2rem 3rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      html { scroll-behavior: smooth; }
     }
   </style>
 </head>
 <body>
-  <main>
-    <h1>Accessibilibounty Hunters</h1>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site">
+    <div class="wrap">
+      <a class="brand" href="#main">Accessibilibounty Hunters</a>
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="#hunt">Hunt bugs</a></li>
+          <li><a href="#leaderboard">Leaderboard</a></li>
+          <li><a href="#developers">For developers</a></li>
+          <li><a href="#report-button">Report button code</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <div class="hero wrap">
+      <p class="eyebrow">Wanted: accessibility bugs</p>
+      <h1>Accessibilibounty Hunters</h1>
+      <p class="lede">It's a bug bounty, but for accessibility bugs. Find them in indie apps, report them, earn points and climb the leaderboard.</p>
+      <div class="actions">
+        <a class="button primary" href="mailto:hello@robinkanatzar.com?subject=Accessibility%20bug%20report&amp;body=App%20name%3A%0A%0AApp%20Store%20link%3A%0A%0ADevice%20and%20iOS%20version%3A%0A%0AAccessibility%20feature%20or%20setting%20you%20were%20using%20(for%20example%20VoiceOver%2C%20Voice%20Control%2C%20larger%20text)%3A%0A%0AWhat%20happened%3A%0A%0AWhat%20you%20expected%3A%0A%0ASteps%20to%20reproduce%3A%0A%0AName%20to%20show%20on%20the%20leaderboard%3A%0A">Report a bug</a>
+        <a class="button secondary" href="#developers">List your app</a>
+      </div>
+    </div>
+
+    <section id="hunt" aria-labelledby="hunt-heading">
+      <div class="wrap">
+        <h2 id="hunt-heading">How bounty hunting works</h2>
+        <ol class="steps">
+          <li><strong>Pick an app</strong> Choose one of the indie apps listed below and try it with the accessibility features you know: VoiceOver, Voice Control, larger text, keyboard, and so on.</li>
+          <li><strong>Report what you find</strong> Email your bug to <a href="mailto:hello@robinkanatzar.com">hello@robinkanatzar.com</a>. Say what happened, what you expected and how to make it happen again.</li>
+          <li><strong>Get verified</strong> Every report is checked by hand. If something is unclear, you'll get an email asking about it.</li>
+          <li><strong>Climb the board</strong> Verified bugs earn points. The more you find, the higher you go. The top hunter wins a prize of some sort, or at least the glory of being number 1.</li>
+        </ol>
+
+        <h3>What makes a good report</h3>
+        <ul class="checks">
+          <li>The app's name and version, and your device and iOS version.</li>
+          <li>The accessibility feature or setting you were using.</li>
+          <li>The screen you were on and the steps that led to the bug.</li>
+          <li>What happened, and what you expected to happen instead.</li>
+          <li>A screenshot or screen recording, if you can make one.</li>
+          <li>The name you'd like to show on the leaderboard.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="apps" aria-labelledby="apps-heading">
+      <div class="wrap">
+        <h2 id="apps-heading">Apps on the hunt list</h2>
+        <div class="card empty">
+          <p>No apps are listed yet. Have an indie app? <a href="#developers">Get it listed</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="leaderboard" aria-labelledby="leaderboard-heading">
+      <div class="wrap">
+        <h2 id="leaderboard-heading">Leaderboard</h2>
+        <div class="card empty">
+          <p>The board is empty for now. Verified bugs will show up here, so the first hunter to report one takes the top spot.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="developers" aria-labelledby="developers-heading">
+      <div class="wrap">
+        <h2 id="developers-heading">For indie developers</h2>
+        <p>Indie apps are leading the charge with accessibility. If you want the community to find accessibility bugs in your app, get it listed here.</p>
+
+        <h3>What you get</h3>
+        <ul class="checks">
+          <li>Every bug report is checked to make sure it's real before it reaches you.</li>
+          <li>Anything unclear gets sorted out with the person who reported it.</li>
+          <li>You get one short, friendly email with the bugs to fix, plus tips and help on how to fix each one. No vague to-do list.</li>
+        </ul>
+
+        <div class="actions">
+          <a class="button primary" href="mailto:hello@robinkanatzar.com?subject=List%20my%20app%20on%20Accessibilibounty%20Hunters&amp;body=App%20name%3A%0A%0AApp%20Store%20link%3A%0A%0APlatforms%20(iPhone%2C%20iPad%2C%20Mac%2C%20Apple%20Watch%2C%20Apple%20TV%2C%20Apple%20Vision%20Pro)%3A%0A%0AAnything%20you%20already%20know%20needs%20work%3A%0A">Email to list your app</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="report-button" aria-labelledby="report-button-heading">
+      <div class="wrap">
+        <h2 id="report-button-heading">Add a report button to your app</h2>
+        <p>The best bug reports come from people using your app every day. Add a "Report an Accessibility Issue" button to your settings screen. It opens an email to Accessibilibounty Hunters, filled in with your app's details and the accessibility settings the person has turned on.</p>
+
+        <h3>1. Copy the button into your SwiftUI project</h3>
+        <p>Change <code>appName</code> and <code>appStoreLink</code> to match your app.</p>
+
+        <div class="code-block">
+          <div class="code-bar">
+            <span id="swift-label">ReportAccessibilityIssueButton.swift</span>
+            <button class="copy" type="button" data-copy="swift-code" aria-describedby="swift-label">Copy code</button>
+          </div>
+          <pre tabindex="0" aria-labelledby="swift-label"><code id="swift-code">import SwiftUI
+import UIKit
+
+/// Opens a pre-filled email to report an accessibility bug.
+/// Change appName and appStoreLink, then add
+/// ReportAccessibilityIssueButton() to your settings screen.
+struct ReportAccessibilityIssueButton: View {
+    // Change these to match your app
+    private let appName = "My Indie App"
+    private let appStoreLink = "https://apps.apple.com/app/id0000000000"
+
+    // Reports go to Accessibilibounty Hunters
+    private let reportAddress = "hello@robinkanatzar.com"
+
+    @Environment(\.openURL) private var openURL
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @State private var showNoMailAlert = false
+
+    var body: some View {
+        Button {
+            guard let url = reportURL else { return }
+            openURL(url) { opened in
+                if !opened { showNoMailAlert = true }
+            }
+        } label: {
+            Label("Report an Accessibility Issue", systemImage: "accessibility")
+        }
+        .alert("No Mail App Found", isPresented: $showNoMailAlert) {
+            Button("Copy Email Address") {
+                UIPasteboard.general.string = reportAddress
+            }
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Please email your report to \(reportAddress).")
+        }
+    }
+
+    private var reportURL: URL? {
+        let subject = "Accessibility bug: \(appName)"
+        return URL(string: "mailto:\(reportAddress)?subject=\(encode(subject))&amp;body=\(encode(emailBody))")
+    }
+
+    private var emailBody: String {
+        let info = Bundle.main.infoDictionary
+        let version = info?["CFBundleShortVersionString"] as? String ?? "unknown"
+        let build = info?["CFBundleVersion"] as? String ?? "unknown"
+        let device = UIDevice.current
+
+        return """
+        What happened?
+
+
+        What did you expect to happen?
+
+
+        Steps to reproduce (which screen, what you tapped):
+
+
+        ---
+        Please keep the details below. They help check the bug.
+        App: \(appName) \(version) (\(build))
+        App Store: \(appStoreLink)
+        Device: \(device.model), \(device.systemName) \(device.systemVersion)
+        VoiceOver: \(onOff(UIAccessibility.isVoiceOverRunning))
+        Switch Control: \(onOff(UIAccessibility.isSwitchControlRunning))
+        Text size: \(String(describing: dynamicTypeSize))
+        Bold Text: \(onOff(UIAccessibility.isBoldTextEnabled))
+        Increase Contrast: \(onOff(UIAccessibility.isDarkerSystemColorsEnabled))
+        Reduce Motion: \(onOff(UIAccessibility.isReduceMotionEnabled))
+        Reduce Transparency: \(onOff(UIAccessibility.isReduceTransparencyEnabled))
+        """
+    }
+
+    private func onOff(_ isOn: Bool) -&gt; String {
+        isOn ? "On" : "Off"
+    }
+
+    private func encode(_ text: String) -&gt; String {
+        let unreserved = CharacterSet(charactersIn:
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~")
+        return text.addingPercentEncoding(withAllowedCharacters: unreserved) ?? text
+    }
+}</code></pre>
+        </div>
+
+        <h3>2. Add it to your settings screen</h3>
+        <div class="code-block">
+          <div class="code-bar">
+            <span id="usage-label">SettingsView.swift</span>
+            <button class="copy" type="button" data-copy="usage-code" aria-describedby="usage-label">Copy code</button>
+          </div>
+          <pre tabindex="0" aria-labelledby="usage-label"><code id="usage-code">Form {
+    Section("Support") {
+        ReportAccessibilityIssueButton()
+    }
+}</code></pre>
+        </div>
+
+        <p class="status" id="copy-status" role="status"></p>
+
+        <h3>Good to know</h3>
+        <ul class="checks">
+          <li>The email lists VoiceOver, Switch Control, text size, Bold Text, Increase Contrast, Reduce Motion and Reduce Transparency. iOS doesn't let apps detect Voice Control or Full Keyboard Access, so people can mention those themselves.</li>
+          <li>If no mail app is set up on the device, the button shows the email address and offers to copy it.</li>
+          <li>Want reports to come to you as well? Add your own address after a comma in <code>reportAddress</code>, or send an email to talk about it.</li>
+        </ul>
+      </div>
+    </section>
   </main>
+
+  <footer>
+    <div class="wrap">
+      <p>Questions, bug reports or apps to list: <a href="mailto:hello@robinkanatzar.com">hello@robinkanatzar.com</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const status = document.getElementById("copy-status");
+    document.querySelectorAll("[data-copy]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const code = document.getElementById(button.dataset.copy).textContent;
+        try {
+          await navigator.clipboard.writeText(code);
+          status.textContent = "Code copied to clipboard.";
+        } catch {
+          status.textContent = "Couldn't copy. Select the code and copy it by hand.";
+        }
+      });
+    });
+  </script>
 </body>
 </html>
