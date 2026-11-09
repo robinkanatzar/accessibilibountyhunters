@@ -368,6 +368,7 @@
           <li><a href="#prize">First prize</a></li>
           <li><a href="#developers">For developers</a></li>
           <li><a href="#report-button">Report button code</a></li>
+          <li><a href="#faq">FAQ</a></li>
         </ul>
       </nav>
     </div>
@@ -398,7 +399,7 @@
       <div class="wrap">
         <h2 id="hunt-heading">How bounty hunting works</h2>
         <ol class="steps" role="list">
-          <li><strong>Pick an app</strong> Choose one of the apps listed below and try it with the accessibility features you know: VoiceOver, Voice Control, larger text, keyboard, and so on.</li>
+          <li><strong>Pick an app</strong> Any iOS app on the App Store counts. The <a href="#apps">apps listed below</a> are a good place to start. Try it with the accessibility features you know: VoiceOver, Voice Control, larger text, keyboard, and so on.</li>
           <li><strong>Report what you find</strong> Email your bug to <a href="mailto:hello@robinkanatzar.com">hello@robinkanatzar.com</a>. Say what happened, what you expected and how to make it happen again.</li>
           <li><strong>Get verified</strong> Every report is checked by hand. If something is unclear, you'll get an email asking about it.</li>
           <li><strong>Climb the board</strong> Verified bugs earn points. The more you find, the higher you go. The top hunter wins the <a href="#prize">first prize</a>.</li>
@@ -471,7 +472,7 @@
         </ul>
 
         <div class="actions">
-          <a class="button primary" href="mailto:hello@robinkanatzar.com?subject=List%20my%20app%20on%20Accessibilibounty%20Hunters&amp;body=App%20name%3A%0A%0AApp%20Store%20link%3A%0A%0APlatforms%20(iPhone%2C%20iPad%2C%20Mac%2C%20Apple%20Watch%2C%20Apple%20TV%2C%20Apple%20Vision%20Pro)%3A%0A%0AAnything%20you%20already%20know%20needs%20work%3A%0A">Email to list your app<span class="visually-hidden"> (opens your email app)</span></a>
+          <a class="button primary" href="mailto:hello@robinkanatzar.com?subject=List%20my%20iOS%20app%20on%20Accessibilibounty%20Hunters&amp;body=App%20name%3A%0A%0AApp%20Store%20link%3A%0A%0ARuns%20on%20(iPhone%2C%20iPad%20or%20both)%3A%0A%0AAnything%20you%20already%20know%20needs%20work%3A%0A">Email to list your app<span class="visually-hidden"> (opens your email app)</span></a>
         </div>
       </div>
     </section>
@@ -595,6 +596,24 @@ struct ReportAccessibilityIssueButton: View {
           <li>If no mail app is set up on the device, the button shows the email address and offers to copy it.</li>
           <li>Want reports to come to you as well? Add your own address after a comma in <code>reportAddress</code>, or send an email to talk about it.</li>
         </ul>
+      </div>
+    </section>
+
+    <section id="faq" aria-labelledby="faq-heading">
+      <div class="wrap">
+        <h2 id="faq-heading">Frequently asked questions</h2>
+
+        <h3>Who reviews the accessibility bugs?</h3>
+        <p>Me, Robin Kanatzar: iOS engineer and accessibility geek. If a bug goes beyond what I know, I'll call in experts.</p>
+
+        <h3>What kind of apps can I find bugs in?</h3>
+        <p>Only iOS apps for now. Maybe later we'll expand to macOS, visionOS and other platforms.</p>
+
+        <h3>How do I know what counts as an accessibility bug?</h3>
+        <p>Read Apple's <a href="https://developer.apple.com/design/human-interface-guidelines/accessibility">Human Interface Guidelines on accessibility</a>. They're the best place to start learning what to look for.</p>
+
+        <h3>I'm a developer. What if listing my app gets me a pile of bad comments?</h3>
+        <p>Don't worry about that! It's why every bug report comes to me first. I clarify and filter the reports, then send you the best, most constructive feedback, written in a positive light. I even include ways to fix each problem, so you know where to start.</p>
       </div>
     </section>
   </main>
