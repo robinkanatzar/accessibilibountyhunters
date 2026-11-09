@@ -237,6 +237,13 @@
       border: 1px solid var(--border);
       border-radius: 10px;
     }
+    .section-art {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin: 0 0 1.5rem;
+      border-radius: 1.5rem;
+    }
     .app-list {
       list-style: none;
       margin: 0 0 1rem;
@@ -398,6 +405,10 @@
     <section id="hunt" aria-labelledby="hunt-heading">
       <div class="wrap">
         <h2 id="hunt-heading">How bounty hunting works</h2>
+        <picture>
+          <source srcset="images/motorcycle-hunter.webp" type="image/webp">
+          <img class="section-art" src="images/motorcycle-hunter.jpg" width="1600" height="900" loading="lazy" alt="A burly cartoon bounty hunter with goggles and an accessibility tattoo rides a motorcycle with one hand and swings a butterfly net with the other, chasing a panicking bug that holds a &quot;Tap target too small&quot; sign.">
+        </picture>
         <ol class="steps" role="list">
           <li><strong>Pick an app</strong> Any iOS app on the App Store counts, whether it runs on iPhone or iPad. The <a href="#apps">apps listed below</a> are a good place to start. Try it with the accessibility features you know: VoiceOver, Voice Control, larger text, keyboard, and so on.</li>
           <li><strong>Report what you find</strong> Email your bug to <a href="mailto:hello@robinkanatzar.com">hello@robinkanatzar.com</a>. Say what happened, what you expected and how to make it happen again.</li>
