@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Accessibilibounty Hunters</title>
   <meta name="description" content="A bug bounty for accessibility bugs in indie apps. Find bugs, earn points, climb the leaderboard.">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <style>
     :root {
       color-scheme: light dark;
@@ -130,7 +133,14 @@
     }
 
     .hero {
-      padding-block: 4rem 3rem;
+      padding-block: 2.5rem 3rem;
+    }
+    .hero-art {
+      display: block;
+      width: clamp(12rem, 45vw, 18rem);
+      height: auto;
+      margin: 0 0 1.5rem;
+      border-radius: 1.5rem;
     }
     .eyebrow {
       margin: 0 0 0.5rem;
@@ -335,6 +345,10 @@
 
   <main id="main" tabindex="-1">
     <div class="hero wrap">
+      <picture>
+        <source srcset="images/logo.webp" type="image/webp">
+        <img class="hero-art" src="images/logo.png" width="800" height="800" alt="A cartoon bounty hunter with a huge handlebar mustache, sunglasses and a sleeveless leather vest squints through a magnifying glass at an iPhone, where a nervous bug hides behind a button.">
+      </picture>
       <p class="eyebrow">Wanted: accessibility bugs</p>
       <h1>Accessibilibounty Hunters</h1>
       <p class="lede">It's a bug bounty, but for accessibility bugs. Find them in indie apps, report them, earn points and climb the leaderboard.</p>
